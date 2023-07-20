@@ -1,5 +1,0 @@
-{
-    "framework": null,
-    "buildCommand": "cpx \"db/**\" build/db && next build",
-    "outputDirectory": "build"
-}

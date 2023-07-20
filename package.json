@@ -6,8 +6,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "google-protobuf": "^3.21.2",
+    "mapbox-gl": "^2.15.0",
     "next": "latest",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "sqlite": "^5.0.1",
+    "sqlite3": "^5.1.6",
+    "swr": "^2.2.0"
   }
 }

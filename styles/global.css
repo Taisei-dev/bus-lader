@@ -6,11 +6,6 @@ body {
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -33,6 +28,6 @@ ul {
 }
 
 button {
-  padding: 0.5rem 1rem;
+  padding: 1px 6px;
   font-weight: bold;
 }

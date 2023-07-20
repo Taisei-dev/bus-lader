@@ -9,13 +9,19 @@ import { busColors, lineColor, lineWidth } from '../lib/constants';
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_ACCESS_TOKEN;
 
 function initMap(mapContainer, map) {
-  const mapConfig = JSON.parse(localStorage.getItem('mapconfig'));
-
+  let mapConfig = JSON.parse(localStorage.getItem('mapconfig'));
+  if (!mapConfig) {
+    mapConfig = {
+      lng: 132.4587,
+      lat: 34.4049,
+      zoom: 12,
+    };
+  }
   map.current = new mapboxgl.Map({
     container: mapContainer.current,
     style: 'mapbox://styles/mapbox/streets-v12',
-    center: [mapConfig.lng || 132.4587, mapConfig.lat || 34.4049],
-    zoom: mapConfig.zoom || 12,
+    center: [mapConfig.lng, mapConfig.lat],
+    zoom: mapConfig.zoom,
   });
   map.current.addControl(
     new mapboxgl.GeolocateControl({
@@ -83,7 +89,7 @@ function displayPosition(map) {
             )
               .then((res) => res.json())
               .then((data) => {
-                if (!map.current.isSourceLoaded('shape')) {
+                if (!map.current.getSource('shape')) {
                   map.current.addSource('shape', {
                     type: 'geojson',
                     data: {
@@ -112,7 +118,7 @@ function displayPosition(map) {
                   .getSource('shape')
                   .setData(geojsonShapedata(data.shapes));
               });
-            let content = `<p>${e.features[0].properties.trip_id}</p>`;
+            let content = `<a target="blank" href="https://kuruken-alpha.vercel.app/trip?daiyasid=${e.features[0].properties.trip_id}">くるけんで見る</p>`;
             new mapboxgl.Popup()
               .setLngLat(e.features[0].geometry.coordinates.slice())
               .setHTML(content)

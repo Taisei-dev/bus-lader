@@ -25,7 +25,9 @@ export default function StopsTable({ stopTimes }) {
             return (
               <Tr key={stopTime.stop_id}>
                 <Td>{stopTime.stop_name}</Td>
-                <Td isNumeric>{stopTime.departure_time}</Td>
+                <Td>
+                  {stopTime.departure_time.split(':').slice(0, 2).join(':')}
+                </Td>
               </Tr>
             );
           })}

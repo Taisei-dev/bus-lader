@@ -1,10 +1,10 @@
 import { useRef, useState } from 'react';
+import Head from 'next/head';
 import {
   Drawer,
   DrawerBody,
   DrawerFooter,
   DrawerHeader,
-  DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
   Button,
@@ -19,6 +19,9 @@ export default function Home() {
   const btnRef = useRef();
   return (
     <>
+      <Head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+      </Head>
       <Map
         setStopTimes={(stopTimes) => {
           onOpen();
@@ -38,7 +41,8 @@ export default function Home() {
         <DrawerContent
           style={{
             background: 'rgba(255,255,255,0.6)',
-            backdropFilter: 'blur(10px)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
           }}
         >
           <DrawerCloseButton />

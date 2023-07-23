@@ -10,6 +10,7 @@
         "@chakra-ui/react": "^2.8.0",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
+        "@mapbox/mapbox-gl-language": "^1.0.1",
         "@vercel/postgres": "^0.4.0",
         "framer-motion": "^10.13.0",
         "google-protobuf": "^3.21.2",

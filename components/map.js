@@ -136,7 +136,7 @@ async function showShapes(map, setStopTimes, tripId) {
   setStopTimes(data.stopTimes);
 }
 
-async function displayVehicles(map, storeTripId, setStopTimes) {
+async function displayVehicles(map, storeTripId, setStopTimes, openDrawer) {
   const res = await fetch('api/vehicle_position');
   const data = await res.json();
 
@@ -171,10 +171,11 @@ async function displayVehicles(map, storeTripId, setStopTimes) {
       ],
     },
   });
-  map.current.on('click', 'vehicles', (e) => {
+  map.current.on('click', 'vehicles', async function (e) {
     const tripId = e.features[0].properties.trip_id;
     storeTripId(tripId);
-    showShapes(map, setStopTimes, tripId);
+    await showShapes(map, setStopTimes, tripId);
+    openDrawer();
   });
   setTimeout(updateMap, 10000, map);
 }
@@ -190,7 +191,12 @@ function savePosition(map) {
   );
 }
 
-export default function Map({ colorMode, setTripId, setStopTimes }) {
+export default function Map({
+  colorMode,
+  setTripId,
+  setStopTimes,
+  openDrawer,
+}) {
   const mapContainer = useRef(null);
   const map = useRef(null);
   let storedTripId = null;
@@ -203,7 +209,7 @@ export default function Map({ colorMode, setTripId, setStopTimes }) {
       initMap(mapContainer, map);
       map.current.on('moveend', () => savePosition(map));
       map.current.on('style.load', () => {
-        displayVehicles(map, storeTripId, setStopTimes);
+        displayVehicles(map, storeTripId, setStopTimes, openDrawer);
         showShapes(map, setStopTimes, storedTripId);
       });
     }

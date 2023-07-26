@@ -10,23 +10,29 @@ import {
   useDisclosure,
   useColorModeValue,
   useColorMode,
+  DarkMode,
 } from '@chakra-ui/react';
 import Map from '../components/map';
 import StopsTable from '../components/stops_table';
+import ColorModePrefMenu from '../components/colormode_selecter';
+import { useColorModePref } from '../lib/colorode_pref';
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure(true);
   const [tripId, setTripId] = useState('');
   const [stopTimes, setStopTimes] = useState([]);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode, colorModePref, setColorModePref } = useColorModePref();
   return (
     <>
       <Map
-        setStopTimes={(stopTimes) => {
-          onOpen();
-          setStopTimes(stopTimes);
-        }}
-        setTripId={setTripId}
         colorMode={colorMode}
+        setStopTimes={setStopTimes}
+        setTripId={setTripId}
+        openDrawer={onOpen}
+      />
+      <ColorModePrefMenu
+        colorMode={colorMode}
+        colorModePref={colorModePref}
+        setColorModePref={setColorModePref}
       />
       <Drawer
         variant="alwaysOpen"

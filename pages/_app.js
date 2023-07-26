@@ -1,9 +1,5 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import '../styles/global.css';
-const config = {
-  initialColorMode: 'true',
-  useSystemColorMode: true,
-};
 
 const components = {
   Drawer: {
@@ -22,7 +18,6 @@ const components = {
 };
 
 const theme = extendTheme({
-  config,
   components,
 });
 

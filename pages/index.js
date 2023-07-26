@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import Head from 'next/head';
+import { useState } from 'react';
 import {
   Drawer,
   DrawerBody,
@@ -9,6 +8,8 @@ import {
   DrawerCloseButton,
   Button,
   useDisclosure,
+  useColorModeValue,
+  useColorMode,
 } from '@chakra-ui/react';
 import Map from '../components/map';
 import StopsTable from '../components/stops_table';
@@ -16,18 +17,16 @@ export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure(true);
   const [tripId, setTripId] = useState('');
   const [stopTimes, setStopTimes] = useState([]);
-  const btnRef = useRef();
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <>
-      <Head>
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-      </Head>
       <Map
         setStopTimes={(stopTimes) => {
           onOpen();
           setStopTimes(stopTimes);
         }}
         setTripId={setTripId}
+        colorMode={colorMode}
       />
       <Drawer
         variant="alwaysOpen"
@@ -40,7 +39,10 @@ export default function Home() {
       >
         <DrawerContent
           style={{
-            background: 'rgba(255,255,255,0.6)',
+            background: useColorModeValue(
+              'rgba(255,255,255,0.6)',
+              'rgba(0,0,0,0.5)'
+            ),
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
           }}

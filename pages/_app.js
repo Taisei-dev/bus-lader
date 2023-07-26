@@ -1,25 +1,6 @@
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from './theme';
 import '../styles/global.css';
-
-const components = {
-  Drawer: {
-    variants: {
-      alwaysOpen: {
-        parts: ['dialog, dialogContainer'],
-        dialog: {
-          pointerEvents: 'auto',
-        },
-        dialogContainer: {
-          pointerEvents: 'none',
-        },
-      },
-    },
-  },
-};
-
-const theme = extendTheme({
-  components,
-});
 
 export default function App({ Component, pageProps }) {
   return (

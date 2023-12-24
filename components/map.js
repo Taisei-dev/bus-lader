@@ -7,7 +7,7 @@ import styles from './map.module.css';
 import constants from '../lib/constants.json';
 import { useTheme } from 'next-themes';
 
-mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
 function initMap(mapContainer, map, style) {
   let mapConfig = JSON.parse(localStorage.getItem('mapconfig'));

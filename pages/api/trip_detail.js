@@ -1,4 +1,4 @@
-import { getTripInfo } from '../../lib/tripinfo';
+import { getTripInfo } from '../../lib/querytripinfo';
 
 export default async function handler(req, res) {
   const tripId = req.query.trip_id;

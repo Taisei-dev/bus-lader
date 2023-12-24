@@ -1,78 +1,103 @@
-import { useState } from 'react';
-import {
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerContent,
-  DrawerCloseButton,
-  Button,
-  useDisclosure,
-  useColorModeValue,
-  useColorMode,
-  DarkMode,
-} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { Show, Hide, useDisclosure, useToast } from '@chakra-ui/react';
 import Map from '../components/map';
-import StopsTable from '../components/stops_table';
 import ColorModePrefMenu from '../components/colormode_selecter';
-import { useColorModePref } from '../lib/colorode_pref';
+import RightTripInfoDrawer from '../components/rightdrawer';
+import BottomTripInfoDrawer from '../components/bottomdrawer';
+import {
+  geojsonShapedata,
+  geojsonStopdata,
+  geojsonVehicledata,
+} from '../lib/geojson';
+
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure(true);
   const [tripId, setTripId] = useState('');
   const [stopTimes, setStopTimes] = useState([]);
-  const { colorMode, colorModePref, setColorModePref } = useColorModePref();
+  const [vehicleData, setVehicleData] = useState(geojsonVehicledata([]));
+  const [shapeStopData, setShapeStopData] = useState({
+    shapes: geojsonShapedata([]),
+    stops: geojsonStopdata([]),
+  });
+  const toast = useToast();
+
+  function updateMap() {
+    fetch('api/vehicle_position')
+      .then((res) => res.json())
+      .then((data) => {
+        setVehicleData(geojsonVehicledata(data));
+      })
+      .catch(() => {
+        toast({
+          position: 'bottom-right',
+          status: 'error',
+          description: '位置データの取得に失敗しました',
+          duration: 10000,
+          isClosable: true,
+        });
+      })
+      .finally(() => {
+        setTimeout(updateMap, 10000);
+      });
+  }
+
+  function onClick(tripId) {
+    setTripId(tripId);
+    setShapeStopData({
+      shapes: geojsonShapedata([]),
+      stops: geojsonStopdata([]),
+    });
+    setStopTimes([]);
+    onOpen();
+    fetch(`/api/trip_detail?trip_id=${tripId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setShapeStopData({
+          shapes: geojsonShapedata(data.shapes),
+          stops: geojsonStopdata(data.stopTimes),
+        });
+        setStopTimes(data.stopTimes);
+      })
+      .catch(() => {
+        toast({
+          position: 'bottom-right',
+          status: 'error',
+          description: '便データの取得に失敗しました',
+          duration: 10000,
+          isClosable: true,
+        });
+        onClose();
+      });
+  }
+
+  useEffect(() => {
+    updateMap();
+  }, []);
+
   return (
     <>
       <Map
-        colorMode={colorMode}
-        setStopTimes={setStopTimes}
-        setTripId={setTripId}
-        openDrawer={onOpen}
+        clickHandler={onClick}
+        vehicleData={vehicleData}
+        shapeStopData={shapeStopData}
       />
-      <ColorModePrefMenu
-        colorMode={colorMode}
-        colorModePref={colorModePref}
-        setColorModePref={setColorModePref}
-      />
-      <Drawer
-        variant="alwaysOpen"
-        isOpen={isOpen}
-        placement="right"
-        onClose={onClose}
-        trapFocus={false}
-        closeOnOverlayClick={false}
-        blockScrollOnMount={false}
-      >
-        <DrawerContent
-          style={{
-            background: useColorModeValue(
-              'rgba(255,255,255,0.6)',
-              'rgba(0,0,0,0.5)'
-            ),
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-          }}
-        >
-          <DrawerCloseButton />
-          <DrawerHeader>運行情報</DrawerHeader>
-          <DrawerBody>
-            <StopsTable stopTimes={stopTimes} />
-          </DrawerBody>
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              閉じる
-            </Button>
-            <Button
-              colorScheme="blue"
-              as="a"
-              target="_blank"
-              href={`https://kuruken-alpha.vercel.app/trip?daiyasid=${tripId}`}
-            >
-              くるけんで開く
-            </Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <ColorModePrefMenu />
+      <Show above="md">
+        <RightTripInfoDrawer
+          isOpen={isOpen}
+          onClose={onClose}
+          stopTimes={stopTimes}
+          tripId={tripId}
+        />
+      </Show>
+      <Hide above="md">
+        <BottomTripInfoDrawer
+          isOpen={isOpen}
+          onClose={onClose}
+          stopTimes={stopTimes}
+          tripId={tripId}
+        />
+      </Hide>
     </>
   );
 }

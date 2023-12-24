@@ -35,6 +35,6 @@ button {
 }
 
 div.mapboxgl-popup-content p,
-button {
+div.mapboxgl-popup-content button {
   color: #000;
 }

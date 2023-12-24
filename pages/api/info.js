@@ -2,7 +2,7 @@ import {
   getAlert,
   getTripUpdate,
   getVehiclePosition,
-} from '../../lib/realtime';
+} from '../../lib/gtfs-realtime';
 export default async function handler(req, res) {
   const tripUpdate = await getTripUpdate();
   const vehiclePosition = await getVehiclePosition();

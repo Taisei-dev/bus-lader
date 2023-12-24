@@ -6,21 +6,19 @@
         "start": "next start"
     },
     "dependencies": {
-        "@chakra-ui/icons": "^2.1.0",
-        "@chakra-ui/next-js": "^2.1.5",
-        "@chakra-ui/react": "^2.8.0",
-        "@emotion/react": "^11.11.1",
+        "@chakra-ui/icons": "^2.1.1",
+        "@chakra-ui/next-js": "^2.2.0",
+        "@chakra-ui/react": "^2.8.2",
+        "@emotion/react": "^11.11.3",
         "@emotion/styled": "^11.11.0",
         "@mapbox/mapbox-gl-language": "^1.0.1",
-        "@vercel/postgres": "^0.4.0",
-        "framer-motion": "^10.13.0",
+        "@vercel/postgres": "^0.5.1",
+        "framer-motion": "^10.16.16",
         "google-protobuf": "^3.21.2",
-        "mapbox-gl": "^2.15.0",
+        "mapbox-gl": "^3.0.1",
         "next": "latest",
+        "next-themes": "^0.2.1",
         "react": "18.2.0",
-        "react-dom": "18.2.0",
-        "sqlite": "^5.0.1",
-        "sqlite3": "^5.1.6",
-        "swr": "^2.2.0"
+        "react-dom": "18.2.0"
     }
 }

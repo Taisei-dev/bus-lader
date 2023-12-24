@@ -1,4 +1,5 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { ThemeProvider } from 'next-themes';
 import '../styles/global.css';
 
 const components = {
@@ -23,8 +24,10 @@ const theme = extendTheme({
 
 export default function App({ Component, pageProps }) {
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <ThemeProvider defaultTheme="system" enableSystem>
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </ThemeProvider>
   );
 }

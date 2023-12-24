@@ -8,6 +8,8 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Skeleton,
+  SkeletonText,
 } from '@chakra-ui/react';
 
 export default function StopsTable({ stopTimes }) {
@@ -21,16 +23,35 @@ export default function StopsTable({ stopTimes }) {
           </Tr>
         </Thead>
         <Tbody>
-          {...stopTimes.map((stopTime) => {
-            return (
-              <Tr key={stopTime.stop_id}>
-                <Td>{stopTime.stop_name}</Td>
-                <Td>
-                  {stopTime.departure_time.split(':').slice(0, 2).join(':')}
-                </Td>
-              </Tr>
-            );
-          })}
+          {...stopTimes.length
+            ? stopTimes.map((stopTime) => {
+                return (
+                  <Tr key={stopTime.stop_id}>
+                    <Td>{stopTime.stop_name}</Td>
+                    <Td>
+                      {stopTime.departure_time.split(':').slice(0, 2).join(':')}
+                    </Td>
+                  </Tr>
+                );
+              })
+            : [
+                <Tr key="skeleton">
+                  <Td>
+                    <SkeletonText
+                      noOfLines={16}
+                      spacing="3"
+                      skeletonHeight="5"
+                    />
+                  </Td>
+                  <Td>
+                    <SkeletonText
+                      noOfLines={16}
+                      spacing="3"
+                      skeletonHeight="5"
+                    />
+                  </Td>
+                </Tr>,
+              ]}
         </Tbody>
       </Table>
     </TableContainer>

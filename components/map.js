@@ -4,16 +4,12 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 import MapboxLanguage from '@mapbox/mapbox-gl-language';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import styles from './map.module.css';
-import { busColors } from '../lib/constants';
-import {
-  geojsonShapedata,
-  geojsonStopdata,
-  geojsonVehicledata,
-} from '../lib/geojson';
+import constants from '../lib/constants.json';
+import { useTheme } from 'next-themes';
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_ACCESS_TOKEN;
+mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
-function initMap(mapContainer, map) {
+function initMap(mapContainer, map, style) {
   let mapConfig = JSON.parse(localStorage.getItem('mapconfig'));
   if (!mapConfig) {
     mapConfig = {
@@ -24,7 +20,7 @@ function initMap(mapContainer, map) {
   }
   map.current = new mapboxgl.Map({
     container: mapContainer.current,
-    style: 'mapbox://styles/mapbox/streets-v11',
+    style: style,
     center: [mapConfig.lng, mapConfig.lat],
     zoom: mapConfig.zoom,
   });
@@ -47,31 +43,13 @@ function initMap(mapContainer, map) {
   map.current.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 }
 
-function updateMap(map) {
-  fetch('api/vehicle_position')
-    .then((res) => res.json())
-    .then((data) => {
-      if (map.current.getSource('vehicle_positions')) {
-        map.current
-          .getSource('vehicle_positions')
-          .setData(geojsonVehicledata(data));
-        setTimeout(updateMap, 10000, map);
-      }
-    });
-}
-
 async function loadImage(map, url) {
   return new Promise((resolve) => {
     map.current.loadImage(url, (err, image) => resolve(image));
   });
 }
 
-async function showShapes(map, setStopTimes, tripId) {
-  if (!tripId) {
-    return;
-  }
-  const res = await fetch(`/api/trip_detail?trip_id=${tripId}`);
-  const data = await res.json();
+async function showShapes(map, resolvedTheme, shapeStopData) {
   if (!map.current.getSource('shape')) {
     map.current.addSource('shape', {
       type: 'geojson',
@@ -92,12 +70,8 @@ async function showShapes(map, setStopTimes, tripId) {
         'line-cap': 'round',
       },
       paint: {
-        'line-color':
-          localStorage.getItem('chakra-ui-color-mode') == 'light'
-            ? '#000'
-            : '#ddd',
-        'line-width':
-          localStorage.getItem('chakra-ui-color-mode') == 'light' ? 5 : 3,
+        'line-color': resolvedTheme == 'light' ? '#000' : '#ddd',
+        'line-width': resolvedTheme == 'light' ? 5 : 3,
       },
     });
   }
@@ -120,11 +94,9 @@ async function showShapes(map, setStopTimes, tripId) {
       },
     });
   }
-  map.current.getSource('shape').setData(geojsonShapedata(data.shapes));
+  map.current.getSource('shape').setData(shapeStopData.shapes);
 
-  map.current
-    .getSource('stop_positions')
-    .setData(geojsonStopdata(data.stopTimes));
+  map.current.getSource('stop_positions').setData(shapeStopData.stops);
   map.current.on('click', 'stops', (e) => {
     let content = `<p>${e.features[0].properties.stop_name}</p>`;
     new mapboxgl.Popup()
@@ -133,13 +105,9 @@ async function showShapes(map, setStopTimes, tripId) {
       .setHTML(content)
       .addTo(map.current);
   });
-  setStopTimes(data.stopTimes);
 }
 
-async function displayVehicles(map, storeTripId, setStopTimes, openDrawer) {
-  const res = await fetch('api/vehicle_position');
-  const data = await res.json();
-
+async function initVehicleLayer(map, resolvedTheme, clickHandler) {
   const busImage = await loadImage(map, '/busicon.png');
   if (map.current.hasImage('mapicon')) {
     return;
@@ -147,9 +115,16 @@ async function displayVehicles(map, storeTripId, setStopTimes, openDrawer) {
   map.current.addImage('mapicon', busImage, { sdf: true });
   const stopImage = await loadImage(map, '/stopicon.png');
   map.current.addImage('stopicon', stopImage);
+  if (map.current.getSource('vehicle_positions')) {
+    return;
+  }
   map.current.addSource('vehicle_positions', {
     type: 'geojson',
-    data: geojsonVehicledata(data),
+    data: {
+      type: 'FeatureCollection',
+      features: [],
+    },
+    promoteId: 'trip_id',
   });
   map.current.addLayer({
     id: 'vehicles',
@@ -157,7 +132,7 @@ async function displayVehicles(map, storeTripId, setStopTimes, openDrawer) {
     source: 'vehicle_positions',
     layout: {
       'icon-image': 'mapicon',
-      'icon-size': 0.2,
+      'icon-size': 0.25,
       'icon-anchor': 'top',
       'icon-allow-overlap': true,
       'icon-rotate': ['get', 'bearing'],
@@ -166,18 +141,31 @@ async function displayVehicles(map, storeTripId, setStopTimes, openDrawer) {
     paint: {
       'icon-color': [
         'get',
-        ['concat', 'bus', ['get', 'company_id']],
-        ['literal', busColors],
+        'color',
+        ['get', ['get', 'company_id'], ['literal', constants]],
+      ],
+      'icon-halo-color': resolvedTheme == 'light' ? '#000' : '#fff',
+      'icon-halo-width': [
+        'case',
+        ['boolean', ['feature-state', 'selected'], false],
+        0.7,
+        0,
       ],
     },
   });
-  map.current.on('click', 'vehicles', async function (e) {
-    const tripId = e.features[0].properties.trip_id;
-    storeTripId(tripId);
-    await showShapes(map, setStopTimes, tripId);
-    openDrawer();
+  map.current.on('click', 'vehicles', (e) => {
+    map.current.removeFeatureState({
+      source: 'vehicle_positions',
+      id: selectedTripId,
+    });
+    const tripId = e.features[0].id;
+    map.current.setFeatureState(
+      { source: 'vehicle_positions', id: tripId },
+      { selected: true }
+    );
+    selectedTripId = tripId;
+    clickHandler(tripId);
   });
-  setTimeout(updateMap, 10000, map);
 }
 
 function savePosition(map) {
@@ -191,34 +179,69 @@ function savePosition(map) {
   );
 }
 
-export default function Map({
-  colorMode,
-  setTripId,
-  setStopTimes,
-  openDrawer,
-}) {
+let selectedTripId = null,
+  _vehicleData,
+  _shapeStopData,
+  _resolvedTheme;
+
+export default function Map({ clickHandler, vehicleData, shapeStopData }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
-  let storedTripId = null;
-  const storeTripId = (tripId) => {
-    storedTripId = tripId;
-    setTripId(tripId);
-  };
+  const { resolvedTheme } = useTheme();
+  _vehicleData = vehicleData;
+  _shapeStopData = shapeStopData;
+  _resolvedTheme = resolvedTheme;
+  function onload() {
+    initVehicleLayer(map, _resolvedTheme, clickHandler).then(() => {
+      map.current.getSource('vehicle_positions').setData(_vehicleData);
+      showShapes(map, _resolvedTheme, _shapeStopData);
+      if (selectedTripId) {
+        map.current.setFeatureState(
+          { source: 'vehicle_positions', id: selectedTripId },
+          { selected: true }
+        );
+      }
+    });
+  }
+
   useEffect(() => {
-    if (!map.current) {
-      initMap(mapContainer, map);
-      map.current.on('moveend', () => savePosition(map));
-      map.current.on('style.load', () => {
-        displayVehicles(map, storeTripId, setStopTimes, openDrawer);
-        showShapes(map, setStopTimes, storedTripId);
-      });
-    }
-    map.current.setStyle(
+    initMap(
+      mapContainer,
+      map,
       `mapbox://styles/mapbox/${
-        colorMode == 'light' ? 'streets-v12' : 'dark-v11'
+        resolvedTheme == 'light' ? 'streets-v12' : 'dark-v11'
       }`
     );
-  }, [colorMode]);
+    map.current.on('moveend', () => savePosition(map));
+    map.current.on('style.load', onload);
+  }, []);
+
+  useEffect(() => {
+    _resolvedTheme = resolvedTheme;
+    if (!map.current) {
+      return;
+    } else {
+      map.current.setStyle(
+        `mapbox://styles/mapbox/${
+          resolvedTheme == 'light' ? 'streets-v12' : 'dark-v11'
+        }`
+      );
+    }
+  }, [resolvedTheme]);
+
+  useEffect(() => {
+    _vehicleData = vehicleData;
+    if (map.current && map.current.getSource('vehicle_positions')) {
+      map.current.getSource('vehicle_positions').setData(vehicleData);
+    }
+  }, [vehicleData]);
+
+  useEffect(() => {
+    _shapeStopData = shapeStopData;
+    if (map.current && map.current.isStyleLoaded()) {
+      showShapes(map, resolvedTheme, shapeStopData);
+    }
+  }, [shapeStopData]);
 
   return <div ref={mapContainer} className={styles.map_container} />;
 }

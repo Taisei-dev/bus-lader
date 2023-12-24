@@ -1,0 +1,142 @@
+{
+  "8": {
+    "name": "広島電鉄",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/8/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/8/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/8/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/8/alerts.bin"
+    },
+    "color": "rgb(0, 128, 0)"
+  },
+  "9": {
+    "name": "広島バス",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/9/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/9/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/9/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/9/alerts.bin"
+    },
+    "color": "rgb(255, 0, 0)"
+  },
+  "10": {
+    "name": "広島交通",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/10/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/10/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/10/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/10/alerts.bin"
+    },
+    "color": "rgb(230, 127, 18)"
+  },
+  "11": {
+    "name": "芸陽バス",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/11/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/11/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/11/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/11/alerts.bin"
+    },
+    "color": "rgb(255, 131, 77)"
+  },
+  "12": {
+    "name": "備北交通",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/12/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/12/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/12/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/12/alerts.bin"
+    },
+    "color": "rgb(0, 0, 255)"
+  },
+  "13": {
+    "name": "ボンバス",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/13/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/13/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/13/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/13/alerts.bin"
+    },
+    "color": "rgb(95, 184, 69)"
+  },
+  "14": {
+    "name": "フォーブル",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/14/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/14/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/14/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/14/alerts.bin"
+    },
+    "color": "rgb(255, 215, 0)"
+  },
+  "15": {
+    "name": "中国JRバス",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/15/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/15/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/15/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/15/alerts.bin"
+    },
+    "color": "rgb(0, 114, 186)"
+  },
+  "17": {
+    "name": "おおのハートバス",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/17/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/17/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/17/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/17/alerts.bin"
+    },
+    "color": "rgb(165, 42, 42)"
+  },
+  "18": {
+    "name": "呉市生活バス",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/18/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/18/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/18/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/18/alerts.bin"
+    },
+    "color": "rgb(131, 255, 77)"
+  },
+  "19": {
+    "name": "廿日市市自主運行バス",
+    "gtfsUrl": "https://ajt-mobusta-gtfs.mcapps.jp/static/19/current_data.zip",
+    "realtimeUrl": {
+      "tripUpdate": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/19/trip_updates.bin",
+      "vehiclePosition": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/19/vehicle_position.bin",
+      "alert": "https://ajt-mobusta-gtfs.mcapps.jp/realtime/19/alerts.bin"
+    },
+    "color": "rgb(77, 131, 255)"
+  },
+  "20": {
+    "name": "中国バス",
+    "gtfsUrl": "https://bus-vision.jp/gtfs_v2/chugokubus/gtfsFeed",
+    "realtimeUrl": {
+      "tripUpdate": "https://bus-vision.jp/realtime/chugokubus_trip_update_v2.bin",
+      "vehiclePosition": "https://bus-vision.jp/realtime/chugokubus_vpos_update_v2.bin",
+      "alert": "https://bus-vision.jp/realtime/chugokubus_alrt_update_v2.bin"
+    },
+    "color": "rgb(0,84,167)"
+  },
+  "21": {
+    "name": "鞆鉄道",
+    "gtfsUrl": "https://bus-vision.jp/gtfs_v2/tomotetsubus/gtfsFeed",
+    "realtimeUrl": {
+      "tripUpdate": "https://bus-vision.jp/realtime/tomotetsubus_trip_update_v2.bin",
+      "vehiclePosition": "https://bus-vision.jp/realtime/tomotetsubus_vpos_update_v2.bin",
+      "alert": "https://bus-vision.jp/realtime/tomotetsubus_alert_update_v2.bin"
+    },
+    "color": "rgb(0,155,99)"
+  },
+  "22": {
+    "name": "井笠バス",
+    "gtfsUrl": "https://bus-vision.jp/gtfs_v2/ikasabus/gtfsFeed",
+    "realtimeUrl": {
+      "tripUpdate": "https://bus-vision.jp/realtime/ikasabus_trip_update_v2.bin",
+      "vehiclePosition": "https://bus-vision.jp/realtime/ikasabus_vpos_update_v2.bin",
+      "alert": "https://bus-vision.jp/realtime/ikasabus_alrt_update_v2.bin"
+    },
+    "color": "rgb(0,84,167)"
+  }
+}

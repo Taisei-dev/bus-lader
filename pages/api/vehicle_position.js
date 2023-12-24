@@ -1,10 +1,10 @@
-import { companyIds } from '../../lib/constants';
-import { getVehiclePosition } from '../../lib/realtime';
+import constants from '../../lib/constants.json';
+import { getVehiclePosition } from '../../lib/gtfs-realtime';
 
 export default async function handler(req, res) {
   const vehiclePosition = (
     await Promise.all(
-      companyIds.map((id) =>
+      Object.keys(constants).map((id) =>
         getVehiclePosition(id).then((array) =>
           array.map((entity) => {
             return {

@@ -135,7 +135,7 @@ async function initVehicleLayer(map, resolvedTheme, clickHandler) {
       'icon-size': 0.25,
       'icon-anchor': 'top',
       'icon-allow-overlap': true,
-      'icon-rotate': ['get', 'bearing'],
+      'icon-rotate': ['to-number', ['get', 'bearing']],
       'icon-rotation-alignment': 'map',
     },
     paint: {
@@ -148,7 +148,7 @@ async function initVehicleLayer(map, resolvedTheme, clickHandler) {
       'icon-halo-width': [
         'case',
         ['boolean', ['feature-state', 'selected'], false],
-        0.7,
+        0.8,
         0,
       ],
     },

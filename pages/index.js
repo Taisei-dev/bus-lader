@@ -9,6 +9,7 @@ import {
   geojsonStopdata,
   geojsonVehicledata,
 } from '../lib/geojson';
+import { DataNotFoundError } from '../lib/notfounderror';
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure(true);
@@ -31,8 +32,9 @@ export default function Home() {
         toast({
           position: 'bottom-right',
           status: 'error',
-          description: '位置データの取得に失敗しました',
-          duration: 10000,
+          title: '位置データの取得に失敗しました',
+          description: '10秒後にもう一度取得します',
+          duration: 9000,
           isClosable: true,
         });
       })
@@ -50,7 +52,16 @@ export default function Home() {
     setStopTimes([]);
     onOpen();
     fetch(`/api/trip_detail?trip_id=${tripId}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          if (res.status == 404) {
+            throw new DataNotFoundError();
+          } else {
+            throw new Error();
+          }
+        }
+        return res.json();
+      })
       .then((data) => {
         setShapeStopData({
           shapes: geojsonShapedata(data.shapes),
@@ -58,15 +69,17 @@ export default function Home() {
         });
         setStopTimes(data.stopTimes);
       })
-      .catch(() => {
+      .catch((err) => {
+        onClose();
         toast({
           position: 'bottom-right',
           status: 'error',
-          description: '便データの取得に失敗しました',
-          duration: 10000,
+          title: '便データの取得に失敗しました',
+          description:
+            err instanceof DataNotFoundError ? 'データがありません' : '',
+          duration: 9000,
           isClosable: true,
         });
-        onClose();
       });
   }
 

@@ -97,14 +97,6 @@ async function showShapes(map, resolvedTheme, shapeStopData) {
   map.current.getSource('shape').setData(shapeStopData.shapes);
 
   map.current.getSource('stop_positions').setData(shapeStopData.stops);
-  map.current.on('click', 'stops', (e) => {
-    let content = `<p>${e.features[0].properties.stop_name}</p>`;
-    new mapboxgl.Popup()
-      .setLngLat(e.features[0].geometry.coordinates.slice())
-      .setOffset(20)
-      .setHTML(content)
-      .addTo(map.current);
-  });
 }
 
 async function initVehicleLayer(map, resolvedTheme, clickHandler) {
@@ -112,8 +104,10 @@ async function initVehicleLayer(map, resolvedTheme, clickHandler) {
   if (map.current.hasImage('mapicon')) {
     return;
   }
-  map.current.addImage('mapicon', busImage, { sdf: true });
-  const stopImage = await loadImage(map, '/stopicon.png');
+  map.current.addImage('mapicon', busImage, { sdf: true }); // bus icon with direction
+  const busLocationImage = await loadImage(map, '/locationicon.png');
+  map.current.addImage('locationicon', busLocationImage, { sdf: true }); // bus icon pointing only place
+  const stopImage = await loadImage(map, '/stopicon.png'); // stop icon
   map.current.addImage('stopicon', stopImage);
   if (map.current.getSource('vehicle_positions')) {
     return;
@@ -131,9 +125,9 @@ async function initVehicleLayer(map, resolvedTheme, clickHandler) {
     type: 'symbol',
     source: 'vehicle_positions',
     layout: {
-      'icon-image': 'mapicon',
+      'icon-image': ['case', ['get', 'has_bearing'], 'mapicon', 'locationicon'],
       'icon-size': 0.25,
-      'icon-anchor': 'top',
+      'icon-anchor': ['case', ['get', 'has_bearing'], 'top', 'bottom'],
       'icon-allow-overlap': true,
       'icon-rotate': ['to-number', ['get', 'bearing']],
       'icon-rotation-alignment': 'map',
@@ -152,19 +146,6 @@ async function initVehicleLayer(map, resolvedTheme, clickHandler) {
         0,
       ],
     },
-  });
-  map.current.on('click', 'vehicles', (e) => {
-    map.current.removeFeatureState({
-      source: 'vehicle_positions',
-      id: selectedTripId,
-    });
-    const tripId = e.features[0].id;
-    map.current.setFeatureState(
-      { source: 'vehicle_positions', id: tripId },
-      { selected: true }
-    );
-    selectedTripId = tripId;
-    clickHandler(tripId);
   });
 }
 
@@ -212,7 +193,29 @@ export default function Map({ clickHandler, vehicleData, shapeStopData }) {
         resolvedTheme == 'light' ? 'streets-v12' : 'dark-v11'
       }`
     );
+    // event listeners are not removed when style change, so register once here
     map.current.on('moveend', () => savePosition(map));
+    map.current.on('click', 'vehicles', (e) => {
+      map.current.removeFeatureState({
+        source: 'vehicle_positions',
+        id: selectedTripId,
+      });
+      const tripId = e.features[0].id;
+      map.current.setFeatureState(
+        { source: 'vehicle_positions', id: tripId },
+        { selected: true }
+      );
+      selectedTripId = tripId;
+      clickHandler(tripId);
+    });
+    map.current.on('click', 'stops', (e) => {
+      let content = `<p>${e.features[0].properties.stop_name}</p>`;
+      new mapboxgl.Popup()
+        .setLngLat(e.features[0].geometry.coordinates.slice())
+        .setOffset(10)
+        .setHTML(content)
+        .addTo(map.current);
+    });
     map.current.on('style.load', onload);
   }, []);
 

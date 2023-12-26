@@ -29,12 +29,13 @@ ul {
   list-style: none;
 }
 
-button {
-  padding: 1px 6px;
-  font-weight: bold;
+div.mapboxgl-popup-content p {
+  color: #000;
+  padding-right: 6px;
 }
 
-div.mapboxgl-popup-content p,
 div.mapboxgl-popup-content button {
   color: #000;
+  padding: 3px 6px;
+  font-weight: bold;
 }

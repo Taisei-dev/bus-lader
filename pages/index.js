@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Show, Hide, useDisclosure, useToast } from '@chakra-ui/react';
 import Map from '../components/map';
 import ColorModePrefMenu from '../components/colormode_selecter';
+import GuideButton from '../components/guidebutton';
 import RightTripInfoDrawer from '../components/rightdrawer';
 import BottomTripInfoDrawer from '../components/bottomdrawer';
 import {
@@ -95,6 +96,7 @@ export default function Home() {
         shapeStopData={shapeStopData}
       />
       <ColorModePrefMenu />
+      <GuideButton />
       <Show above="md">
         <RightTripInfoDrawer
           isOpen={isOpen}

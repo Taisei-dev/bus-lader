@@ -32,8 +32,9 @@ export default function ColorModePrefMenu() {
         as={Button}
         rightIcon={<ChevronDownIcon />}
         position="fixed"
-        top={6}
-        right={6}
+        top="1rem"
+        right="1rem"
+        height="2.5rem"
       >
         {resolvedTheme == 'light' ? <MoonIcon /> : <SunIcon />}
       </MenuButton>

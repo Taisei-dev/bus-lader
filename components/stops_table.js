@@ -24,9 +24,9 @@ export default function StopsTable({ stopTimes }) {
         </Thead>
         <Tbody>
           {...stopTimes.length
-            ? stopTimes.map((stopTime) => {
+            ? stopTimes.map((stopTime, index) => {
                 return (
-                  <Tr key={stopTime.stop_id}>
+                  <Tr key={index}>
                     <Td>{stopTime.stop_name}</Td>
                     <Td>
                       {stopTime.departure_time.split(':').slice(0, 2).join(':')}

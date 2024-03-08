@@ -14,7 +14,7 @@ See [this site](https://developers.google.com/transit) for more information abou
 This project assumes database,so must be installed separately.  
 Tools to setup database will come soon.  
 The data source to be used can be changed by editing lib/constants.json.  
-MAPBOX_ACCESS_TOKEN and POSTGRES_URL must be specified as environment variables.
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN and DATABASE_URL must be specified as environment variables.
 
 ## Technology used
 
@@ -22,7 +22,7 @@ MAPBOX_ACCESS_TOKEN and POSTGRES_URL must be specified as environment variables.
 | -------------- | -------------------------------- |
 | Frontend       | Next.js, Chakra UI, Mapbox GL JS |
 | Backend        | Next.js                          |
-| Database       | Vercel Postgres                  |
+| Database       | Vercel Postgres, Prisma          |
 | Infrastructure | Vercel                           |
 
 ## Features
@@ -34,7 +34,5 @@ MAPBOX_ACCESS_TOKEN and POSTGRES_URL must be specified as environment variables.
 - Route/Stops visualization
 - Selected icon highlighting
 - Responsive detail drawer
-
-## Upcoming Features
-
-- [ ] Tools to setup and update databases
+- Save last map location
+- Tools to setup and update databases

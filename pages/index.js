@@ -5,21 +5,16 @@ import ColorModePrefMenu from '../components/colormode_selecter';
 import GuideButton from '../components/guidebutton';
 import RightTripInfoDrawer from '../components/rightdrawer';
 import BottomTripInfoDrawer from '../components/bottomdrawer';
-import {
-  geojsonShapedata,
-  geojsonStopdata,
-  geojsonVehicledata,
-} from '../lib/geojson';
 import { DataNotFoundError } from '../lib/notfounderror';
 
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure(true);
   const [tripId, setTripId] = useState('');
   const [stopTimes, setStopTimes] = useState([]);
-  const [vehicleData, setVehicleData] = useState(geojsonVehicledata([]));
+  const [vehicleData, setVehicleData] = useState([]);
   const [shapeStopData, setShapeStopData] = useState({
-    shapes: geojsonShapedata([]),
-    stops: geojsonStopdata([]),
+    shapes: [],
+    stops: [],
   });
   const toast = useToast();
 
@@ -27,7 +22,7 @@ export default function Home() {
     fetch('api/vehicle_position')
       .then((res) => res.json())
       .then((data) => {
-        setVehicleData(geojsonVehicledata(data));
+        setVehicleData(data);
       })
       .catch(() => {
         toast({
@@ -44,15 +39,15 @@ export default function Home() {
       });
   }
 
-  function onClick(tripId) {
+  function onClick(tripId, companyId) {
     setTripId(tripId);
     setShapeStopData({
-      shapes: geojsonShapedata([]),
-      stops: geojsonStopdata([]),
+      shapes: [],
+      stops: [],
     });
     setStopTimes([]);
     onOpen();
-    fetch(`/api/trip_detail?trip_id=${tripId}`)
+    fetch(`/api/trip_detail?trip_id=${tripId}&company_id=${companyId}`)
       .then((res) => {
         if (!res.ok) {
           if (res.status == 404) {
@@ -64,11 +59,11 @@ export default function Home() {
         return res.json();
       })
       .then((data) => {
-        setShapeStopData({
-          shapes: geojsonShapedata(data.shapes),
-          stops: geojsonStopdata(data.stopTimes),
-        });
         setStopTimes(data.stopTimes);
+        setShapeStopData({
+          shapes: data.shapes,
+          stops: data.stopTimes,
+        });
       })
       .catch((err) => {
         onClose();

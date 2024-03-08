@@ -1,0 +1,65 @@
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Shape {
+  shape_id    String
+  company_id  String
+  trips       Trip[]       @relation("trips")
+  shapepoints ShapePoint[] @relation("shapepoints")
+
+  @@id([shape_id, company_id])
+  @@map("shapes")
+}
+
+model ShapePoint {
+  shape             Shape  @relation("shapepoints", fields: [shape_id, company_id], references: [shape_id, company_id])
+  shape_id          String
+  company_id        String
+  shape_pt_sequence Int
+  shape_pt_lat      Float  @db.Real
+  shape_pt_lon      Float  @db.Real
+
+  @@id([shape_id, company_id, shape_pt_sequence])
+  @@map("shapepoints")
+}
+
+model Trip {
+  trip_id    String
+  company_id String
+  stoptimes  StopTime[] @relation("stoptimes")
+  shape      Shape?     @relation("trips", fields: [shape_id, company_id], references: [shape_id, company_id])
+  shape_id   String?
+
+  @@id(name: "compound_trip_id", [trip_id, company_id])
+  @@map("trips")
+}
+
+model StopTime {
+  trip           Trip   @relation("stoptimes", fields: [trip_id, company_id], references: [trip_id, company_id])
+  trip_id        String
+  company_id     String
+  stop_sequence  Int
+  arrival_time   String
+  departure_time String
+  stop_headsign  String
+  stop_name      String
+  stop_lat       Float  @db.Real
+  stop_lon       Float  @db.Real
+
+  @@id([trip_id, company_id, stop_sequence])
+  @@map("stop_times")
+}
+
+model FeedInfo {
+  company_id    String   @id
+  company_name  String
+  feed_end_date DateTime
+
+  @@map("feed_info")
+}

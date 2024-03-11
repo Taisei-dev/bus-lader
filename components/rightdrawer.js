@@ -12,13 +12,21 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionPanel,
+  Icon,
+  Text,
+  Stack,
+  Skeleton,
 } from '@chakra-ui/react';
+import { FaLocationArrow } from 'react-icons/fa6';
 import StopsTable from './stops_table';
+import constants from '../lib/constants.json';
 export default function RightTripInfoDrawer({
   isOpen,
   onClose,
+  routeName,
   stopTimes,
   tripId,
+  companyId,
 }) {
   return (
     <Drawer
@@ -43,6 +51,24 @@ export default function RightTripInfoDrawer({
         <DrawerHeader>運行情報</DrawerHeader>
         <DrawerCloseButton />
         <DrawerBody>
+          <Stack direction={['column', 'row']} mb={4}>
+            <Text>
+              {companyId ? (
+                <>
+                  <Icon
+                    as={FaLocationArrow}
+                    color={constants[companyId].color}
+                  />
+                  {constants[companyId].name}
+                </>
+              ) : (
+                <Skeleton>Company Name</Skeleton>
+              )}
+            </Text>
+            <Text>
+              {routeName ? routeName : <Skeleton>Route Name</Skeleton>}
+            </Text>
+          </Stack>
           <StopsTable stopTimes={stopTimes} />
         </DrawerBody>
         <DrawerFooter>

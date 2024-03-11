@@ -7,6 +7,17 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Route {
+  route_id   String
+  company_id String
+  short_name String
+  long_name  String
+  trips      Trip[] @relation("routes")
+
+  @@id(name: "compound_route_id", [route_id, company_id])
+  @@map("routes")
+}
+
 model Shape {
   shape_id    String
   company_id  String
@@ -32,6 +43,8 @@ model ShapePoint {
 model Trip {
   trip_id    String
   company_id String
+  route      Route      @relation("routes", fields: [route_id, company_id], references: [route_id, company_id])
+  route_id   String
   stoptimes  StopTime[] @relation("stoptimes")
   shape      Shape?     @relation("trips", fields: [shape_id, company_id], references: [shape_id, company_id])
   shape_id   String?

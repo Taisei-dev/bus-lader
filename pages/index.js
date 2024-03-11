@@ -10,6 +10,8 @@ import { DataNotFoundError } from '../lib/notfounderror';
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure(true);
   const [tripId, setTripId] = useState('');
+  const [companyId, setCompanyId] = useState('');
+  const [routeName, setRouteName] = useState('');
   const [stopTimes, setStopTimes] = useState([]);
   const [vehicleData, setVehicleData] = useState([]);
   const [shapeStopData, setShapeStopData] = useState({
@@ -41,10 +43,12 @@ export default function Home() {
 
   function onClick(tripId, companyId) {
     setTripId(tripId);
+    setCompanyId(companyId);
     setShapeStopData({
       shapes: [],
       stops: [],
     });
+    setRouteName('');
     setStopTimes([]);
     onOpen();
     fetch(`/api/trip_detail?trip_id=${tripId}&company_id=${companyId}`)
@@ -59,6 +63,9 @@ export default function Home() {
         return res.json();
       })
       .then((data) => {
+        setRouteName(
+          data.routeNames.short_name + ' ' + data.routeNames.long_name
+        );
         setStopTimes(data.stopTimes);
         setShapeStopData({
           shapes: data.shapes,
@@ -96,16 +103,20 @@ export default function Home() {
         <RightTripInfoDrawer
           isOpen={isOpen}
           onClose={onClose}
+          routeName={routeName}
           stopTimes={stopTimes}
           tripId={tripId}
+          companyId={companyId}
         />
       </Show>
       <Hide above="md">
         <BottomTripInfoDrawer
           isOpen={isOpen}
           onClose={onClose}
+          routeName={routeName}
           stopTimes={stopTimes}
           tripId={tripId}
+          companyId={companyId}
         />
       </Hide>
     </>

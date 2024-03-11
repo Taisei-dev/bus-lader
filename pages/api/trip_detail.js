@@ -21,22 +21,35 @@ async function fetchTripInfo(tripId, companyId) {
   if (!stopTimes.length) {
     throw new DataNotFoundError('stoptimes', tripId);
   }
-  const shapeId = (
-    await prisma.trip.findUnique({
-      where: {
-        compound_trip_id: {
-          trip_id: tripId,
-          company_id: companyId,
-        },
+  const trip = await prisma.trip.findUnique({
+    where: {
+      compound_trip_id: {
+        trip_id: tripId,
+        company_id: companyId,
       },
-      select: {
-        shape_id: true,
+    },
+    select: {
+      route_id: true,
+      shape_id: true,
+    },
+  });
+  const routeId = trip['route_id'],
+    shapeId = trip['shape_id'];
+  const routeNames = await prisma.route.findUnique({
+    where: {
+      compound_route_id: {
+        route_id: routeId,
+        company_id: companyId,
       },
-    })
-  )['shape_id'];
+    },
+    select: {
+      short_name: true,
+      long_name: true,
+    },
+  });
   if (!shapeId) {
     //shapes can be empty
-    return { stopTimes, shapes: [] };
+    return { routeNames, stopTimes, shapes: [] };
   }
   const shapes = await prisma.shapePoint.findMany({
     where: {
@@ -51,7 +64,7 @@ async function fetchTripInfo(tripId, companyId) {
       shape_pt_sequence: 'asc',
     },
   });
-  return { stopTimes, shapes };
+  return { routeNames, stopTimes, shapes };
 }
 
 export default async function handler(req, res) {

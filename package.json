@@ -13,7 +13,7 @@
     "@emotion/styled": "^11.11.0",
     "@mapbox/mapbox-gl-language": "^1.0.1",
     "@prisma/client": "^5.10.2",
-    "@vercel/postgres": "^0.5.1",
+    "@vercel/postgres": "^0.9.0",
     "framer-motion": "^10.16.16",
     "google-protobuf": "^3.21.2",
     "mapbox-gl": "^3.0.1",

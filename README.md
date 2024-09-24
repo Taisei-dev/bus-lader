@@ -14,7 +14,7 @@ See [this site](https://developers.google.com/transit) for more information abou
 This project assumes database,so must be installed separately.  
 [Here](https://github.com/Taisei-dev/bus-lader-db-tool) is CLI to setup database.  
 The data source to be used can be changed by editing lib/constants.json.  
-NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN and DATABASE_URL must be specified as environment variables.
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN DATABASE_URL and DIRECT_URL must be specified as environment variables.
 
 ## Technology used
 
@@ -22,7 +22,7 @@ NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN and DATABASE_URL must be specified as environmen
 | -------------- | -------------------------------- |
 | Frontend       | Next.js, Chakra UI, Mapbox GL JS |
 | Backend        | Next.js, Prisma                  |
-| Database       | Vercel Postgres,                 |
+| Database       | Supabase                         |
 | Infrastructure | Vercel                           |
 
 ## Features

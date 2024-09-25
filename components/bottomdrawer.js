@@ -104,14 +104,14 @@ export default function BottomTripInfoDrawer({
                     <Button variant="outline" mr={3} onClick={onClose}>
                       閉じる
                     </Button>
-                    <Button
+                    {/* <Button
                       colorScheme="blue"
                       as="a"
                       target="_blank"
                       href={`https://kuruken-alpha.vercel.app/trip?daiyasid=${tripId}`}
                     >
                       詳細を見る
-                    </Button>
+                    </Button> */}
                   </DrawerFooter>
                 </AccordionPanel>
               </>

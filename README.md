@@ -1,12 +1,12 @@
 ## Visualize bus locations using GTFS real-time open data
 
-You can check out the app on [Vercel](https://hiroshima-bus-monitor.vercel.app/).
+You can check out the app on [Vercel](https://tokyo-bus-lader.vercel.app/).
 
 ## About
 
-Locations of currently operating buses in Hiroshima are displayed on the map.  
+Locations of currently operating buses displayed on the map.  
 Click on the icons for more information such as route,stops,and time.  
-Using [GTFS-JP and GTFS real-time open data published by the Hiroshima Prefectural Bus Association](https://www.bus-kyo.or.jp/gtfs-open-data).  
+Using [GTFS-JP and GTFS real-time open data by Bureau of Transportation, Tokyo Metropolitan Government / Association for Open Data of Public Transportation](https://ckan.odpt.org/dataset/b_bus_gtfs_jp-toei).  
 See [this site](https://developers.google.com/transit) for more information about GTFS.
 
 ## Development

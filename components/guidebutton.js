@@ -45,17 +45,27 @@ export default function GuideButton() {
             <VStack align="left">
               <Heading size="md">このサイトについて</Heading>
               <Text>
-                広島県バス協会が公開する
+                東京都交通局・公共交通オープンデータ協議会が公開する
                 <Link
                   color={linkColor}
                   textDecoration="underline"
                   isExternal
-                  href="https://www.bus-kyo.or.jp/gtfs-open-data"
+                  href="https://ckan.odpt.org/dataset/b_bus_gtfs_jp-toei/resource/171a583d-4bf3-4f71-ae57-16f2140babda"
                 >
                   GTFSオープンデータ
                   <ExternalLinkIcon mx="2px" />
                 </Link>
-                を利用して、広島で運行中のバスの位置情報を可視化するサイトです。
+                と
+                <Link
+                  color={linkColor}
+                  textDecoration="underline"
+                  isExternal
+                  href="https://ckan.odpt.org/dataset/b_bus_gtfs_rt-toei/resource/4c440b4d-ae78-4eb2-bf4e-c6e9eb2fa717"
+                >
+                  GTFSリアルタイムデータ
+                  <ExternalLinkIcon mx="2px" />
+                </Link>
+                を利用して、運行中のバスの位置情報を可視化するサイトです。
               </Text>
               <Spacer />
               <Heading size="md">使い方</Heading>
